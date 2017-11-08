@@ -7,19 +7,17 @@ using UnityEngine.UI;
 //Robert McMullen 100977031
 //sWall Game/Activity
 
-
-public class GamePlay : MonoBehaviour {
+public class GamePlay : MonoBehaviour  {
     //TODO Add panning/camera movement
-    //TODO Add touchScreen Vector movement
-    //TODO Add main menu
-    //TODO add scoring system
-    //TODO Confirm shouldn't clip the side of the screen
+    //TODO Add touchScreen Vector movement  
 
-        
+    //TODO Add a teardown method 
+    //TODO Add 1 method to call everything that happens in 1 round
+
 
     /********************************************/
     /********  Public Variables  ****************/
-    /********************************************/
+    /********************************************/    
     public Canvas background;//Parent class for the map
     public Camera cam;//main camera
     public RawImage map;//the map image
@@ -28,6 +26,8 @@ public class GamePlay : MonoBehaviour {
     public RawImage pinLocked;//Mirror of pin but with pink color
     public Image randomImageToGuess;//Contains a random image from a list that the user must guess its location    
     public List<Sprite> images;//List containing all the images that get displayed that the user must guess    
+    public Text scoreText;//Contains the current score of the player, initialy starts at 00000
+    public Text roundText;//Contains the current round of the player / the total round; ex 1/3 == round 1 of 3
 
     /********************************************/
     /***************   Flags  *******************/
@@ -56,14 +56,17 @@ public class GamePlay : MonoBehaviour {
     private int guessMinBuffer = 20;//If you guess within this number it will round to a perfect score
     private int guessMaxBuffer = 3800;//If you guess over this distance it will be a 0. (~3800 is corner to corner)
     private float zoomValue = 150f;// Value for how much the camera zooms in and out
-    private float waitTime = 1.0f; // Float for how long the picture stays up on the screen(in seconds)
-    private List<Sprite> imagesNoDup;//Same as other array except there are no duplicate pictures in thie array
+    private float waitTime = 5.0f; // Float for how long the picture stays up on the screen(in seconds)
+    private float watchScoreTime = 2f;//This is the wait time between loading up the next round, allowing the player to check their score
+    private List<Sprite> imagesNoDup;//Same as other array except there are no duplicate pictures in thie array    
 
     /********************************************/
     /***********  Gameplay Related  *************/
     /********************************************/
     private float guessDistance;// Contains the distance of the users guess
-    private float score;  
+    private float score; //Contains the current running score of the player
+    private int maxRound = 3;//Contains the max rounds to be played for 1 match
+    private int currentRound;//Holds the current round of the game
 
 
 
@@ -75,7 +78,8 @@ public class GamePlay : MonoBehaviour {
         pinVec.z = 0;
         pinCreate = false;
         locked = false;
-        clickable = false;    
+        clickable = false;
+        currentRound = 1;
 
         showPicture();
         Invoke("removeOldImage",waitTime);//Invokes the method removeOldImage 'waitTime' from now
@@ -89,7 +93,7 @@ public class GamePlay : MonoBehaviour {
         Destroy(guessButton.gameObject);
         guessDistance = getDistance(pinVec, clickLocation);
         calculateScore();
-        //drawLine(pinVec, clickLocation);
+       
     }
 
 
@@ -178,6 +182,7 @@ public class GamePlay : MonoBehaviour {
 
     }
 
+
     public float getDistance(Vector3 initial,Vector3 guess)//returns a float containing the distance between the guess and the real location
     {
         Debug.Log("INITIAL:"+initial.x + "," + initial.y);
@@ -188,32 +193,19 @@ public class GamePlay : MonoBehaviour {
         return distance;
     }
 
-    public void drawLine(Vector3 a,Vector3 b)//Draws a line between points a and b
-    {
-        //TODO line rendere could be a good possibility
-        LineRenderer line_1;
-        LineRenderer line = new LineRenderer();
-        line.gameObject.SetActive(true);
-        line.SetVertexCount(2);
-        line.SetPosition(0, a);
-        line.SetPosition(1, b);
-
-    }
-
+    
     public void showPicture()//To make the picture dissapear move it behind the map, then to bring it back move it ahead.
     {
-        //Sprite rand = randomPic.getRandomImage();
-        //Sprite rand = randomPic.getCurrentImage();
-        //Sprite rand = images[0];
         Sprite rand = getRandomImage();
         newGuessImage = randomImageToGuess;
+       
         newGuessImage = Instantiate(newGuessImage);
 
 
         newGuessImage.sprite = rand;//Sets the image to the random one from the array of images.
-           
+        
         newGuessImage.transform.SetParent(background.transform);       
-       
+        
     }
 
     public void removeOldImage()//deletes the duplicate image keeping the orignial
@@ -224,7 +216,7 @@ public class GamePlay : MonoBehaviour {
 
     }
     
-    public Sprite getRandomImage()
+    public Sprite getRandomImage()//Gets a random image from a secondary array, then removes this image from that array so that you can't get the same image twice
     {
 
         int count = imagesNoDup.Count;
@@ -232,11 +224,12 @@ public class GamePlay : MonoBehaviour {
         Debug.Log("Selecting Image at index:" + index);
         Sprite currentImage = imagesNoDup[index];
         imagesNoDup.RemoveAt(index);//Remove the called image so that there is no repitition
+
         return currentImage;
 
     }
     
-    private void calculateScore()
+    private void calculateScore()//Since calculate score is at the end of the round, nextRound also gets invoked.
     {
         
         if (guessDistance < guessMinBuffer) //Small buffer to give a perfect score.
@@ -249,9 +242,47 @@ public class GamePlay : MonoBehaviour {
         }
         else //Base case for scoring is to subract distance from the max score.
         {
-            score = maxScore - guessDistance;
+            score += maxScore - guessDistance;
         }
-        Debug.Log("Your score is:" + score);
+
+
+        int scoreInt = (int)score;//Casting to int removes all the digits after the decimal       
+        setScore(scoreInt);
+
+        Debug.Log("Your score is:" + scoreInt);
+        Invoke("nextRound", watchScoreTime);
+
+
+    }
+    public void setRound(int roundNum,int totalRound)//Setter for the text box, roundNum is the current round and totalRound is the overal rounds
+    {
+        roundText.GetComponent<Text>().text = roundNum.ToString() + "/" + totalRound.ToString() ;
+    }
+    public void setScore(int newScore)//Changes how much score the player has
+    {
+        scoreText.GetComponent<Text>().text = newScore.ToString();
+    }
+
+    public void nextRound()//Load up the next image and play another round incrementing the round and score.
+    {
+        if(currentRound == maxRound)//Checks to see if the last round was just played
+        {
+            endGame();
+        }
+        currentRound += currentRound;
+        showPicture();
+        
+        Invoke("removeOldImage", waitTime);//Invokes the method removeOldImage 'waitTime' from now
+        Destroy(guessPin.gameObject);
+        locked = false;//reset the clicking on the screen
+        pinCreate = false;
+        setRound(currentRound, maxRound);
+        Debug.Log("Setting clickable to:" + !clickable);
+        
+       
+    }
+    public void endGame()//Called once the max rounds have been played.
+    {
 
     }
 
