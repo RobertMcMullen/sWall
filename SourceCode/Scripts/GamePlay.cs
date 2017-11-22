@@ -12,8 +12,8 @@ using System;
 //Robert McMullen 100977031
 //sWall Game/Activity
 
-public class GamePlay : MonoBehaviour  {
-    
+public class GamePlay : MonoBehaviour {
+
     //TODO Add touchScreen Vector movement  
 
     //TODO Add a teardown method 
@@ -25,7 +25,7 @@ public class GamePlay : MonoBehaviour  {
 
     /********************************************/
     /********  Public Variables  ****************/
-    /********************************************/    
+    /********************************************/
     public Canvas background;//Parent class for the map
     public Camera cam;//main camera
     public RawImage map;//the map image
@@ -47,8 +47,9 @@ public class GamePlay : MonoBehaviour  {
     private bool pinCreate;//Flag for creating pin, true==pin on screen false==no pins.
     private bool locked;//If true the guess is locked in and no more guesses allowed.
     private bool clickable;//Set to false while a picture is shown on screen then true once you can click
-    private bool testing = false;//If true then the pictures aren't random 
+    private bool testing = true;//If true then the pictures aren't random 
     private bool verbose = true;//If set to false then all logs disabled. If true logs will display to console
+    
 
     /********************************************/
     /************  Pins & Buttons  **************/
@@ -80,18 +81,18 @@ public class GamePlay : MonoBehaviour  {
     private int currentRound;//Holds the current round of the game
     public static int maxRound = 3;//Contains the max rounds to be played for 1 match   
     public static float waitTime = 5.0f; // Float for how long the picture stays up on the screen(in seconds)
-    
 
 
-    void Start () {//sets flags      
+
+    void Start() {//sets flags      
 
         if (verbose)
         {
-            Debug.Log("Waitin for " + waitTime + "s");
+            Debug.Log("Waiting for " + waitTime + "s");
             Debug.Log("Playing " + maxRound + " Rounds");
         }
         usedImageIndexes = new List<int>();
-        instance = this;       
+        instance = this;
         pinVec.x = pin.transform.position.x;
         pinVec.y = pin.transform.position.y;
         pinVec.z = 0;
@@ -100,63 +101,63 @@ public class GamePlay : MonoBehaviour  {
         clickable = false;
         currentRound = 1;
         nextRoundButton.onClick.AddListener(nextRound);
-        Debug.Log(Application.dataPath);        
+        Debug.Log(Application.dataPath);
         playRound();
-        
-            
+
+
     }
     public void playRound()//Gets called to start the round
     {
         pin.enabled = false;
         showPicture();
-        Invoke("removeOldImage",waitTime);//Invokes the method removeOldImage 'waitTime' from now
+        Invoke("removeOldImage", waitTime);//Invokes the method removeOldImage 'waitTime' from now
     }
-   
+
     private void setXY(int index)//Get the xy coordinates from an XML doc for each picture 
     {
         XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load(Application.dataPath+"/Scripts/Locations.xml");//This may cause an error after building, not sure
+        xmlDoc.Load(Application.dataPath + "/Scripts/Locations.xml");//This may cause an error after building, not sure
         var baseNode = xmlDoc.DocumentElement;
 
         foreach (XmlNode node in baseNode.ChildNodes)//Parse the xmlDoc for the specific image.
         {
             if (verbose)
             {
-                Debug.Log("Index num = " + index);                
+                Debug.Log("Index num = " + index);
                 //Debug.Log("Node Name: " + node.Name);
                 //Debug.Log("Node Inner Text: " + node.SelectSingleNode("num").InnerText);
                 //Debug.Log("Node X: " + node.SelectSingleNode("x").InnerText);
             }
-            if(Int32.Parse(node.SelectSingleNode("num").InnerText).Equals(index))
+            if (Int32.Parse(node.SelectSingleNode("num").InnerText).Equals(index))
             {
                 float posX = float.Parse(node.SelectSingleNode("x").InnerText);
-                float posY = float.Parse(node.SelectSingleNode("y").InnerText);   
+                float posY = float.Parse(node.SelectSingleNode("y").InnerText);
                 if (verbose)
                 {
                     Debug.Log("Real location X: " + posX);
                     Debug.Log("Real location X: " + posY);
-                }               
-                
-                moveRealLocationPin(posX,posY);
+                }
+
+                moveRealLocationPin(posX, posY);
             }
 
-        }      
-        
+        }
+
     }
 
     public void confirmLocation()//action listenere class called when confirm button clicked
     {
         pin.enabled = true;
         nextRoundButton.gameObject.SetActive(true);
-        locked = true;        
+        locked = true;
         guessPin.texture = pinLocked.texture;
         Destroy(guessButton.gameObject);
         guessDistance = getDistance(pinVec, clickLocation);
         calculateScore();
-       
+
     }
 
-	void Update() //Check if click location is the same as the button location
+    void Update() //Check if click location is the same as the button location
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -177,35 +178,60 @@ public class GamePlay : MonoBehaviour  {
         {
             Vector3 shift = new Vector3(0, 150, 0);
             cam.transform.position -= shift;
-        }
+        }        
 
-
-        if (Input.GetAxis("Mouse ScrollWheel")>0f)// Zoom with Scroll Wheel
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f)// Zoom with Scroll Wheel
         {
             if ((cam.orthographicSize - zoomValue > 0))//Need to make sure you can't zoom in past the image.
-                {
+            {
                 cam.orthographicSize -= zoomValue;
-                }  
+            }
         }
         // Scoll back
         if (Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
-            cam.orthographicSize += zoomValue;   
+            cam.orthographicSize += zoomValue;
 
         }
-        if (Input.GetMouseButtonDown(0) && EventSystem.current.currentSelectedGameObject == null && locked==false&&clickable==true)//== null means you clicked in the empty space and not the button
+        if (Input.GetMouseButtonDown(0) && EventSystem.current.currentSelectedGameObject == null && locked == false && clickable == true)//== null means you clicked in the empty space and not the button
         {
-             
+
             clickLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             clickLocation.z = 0;
             clickLocation.y += 45;//Need to offset since the point is at the bottom of the image. Shift up to move the center of the image to the bottom point.
             createNewPin(clickLocation);
         }
-       
+
     }
-    
+
+    private void generateTestGuess()//Generates a new vector and pin at a random location after waiting 3 seconds using the WaitTime method
+    {               
+        int randomXValue = UnityEngine.Random.Range(-1070, 1070);//X Ranges from -1070 to +1070
+        int randomYValue = UnityEngine.Random.Range(-1570, 1680);//Y Ranges from -1570 to 1680
+        Vector3 randomTestGuessVect = new Vector3(randomXValue, randomYValue, 0);
+        //createNewPin(randomTestGuessVect);            
+        StartCoroutine(WaitTime(3,randomTestGuessVect));
+    }
+    IEnumerator WaitTime(float duration, Vector3 guessVect)//Waits duration that creates a new pin at the input vector.
+    {
+        
+        print("Begin Wait" + Time.time);
+        yield return new WaitForSeconds(duration);
+        createNewPin(guessVect);
+        print("Done waiting" + Time.time);
+    }
+
+    private void print(String s)//Helper method, easier to type print than Debug.log(...)
+    {
+        Debug.Log(s);
+    }
+
     private bool checkVector(Vector3 inputVector)//Returns true if the pin should be created within the playing area and false if the click is on the headers.
     {
+        if (verbose)
+        {
+            print("Checking Vector...");
+        }
         if (inputVector.y < -1580)
         {
             //Too low           
@@ -223,7 +249,10 @@ public class GamePlay : MonoBehaviour  {
 
     private void createNewPin(Vector3 inputVector)//Create a pin at the x,y,z location
     {
-                       
+        if (verbose)
+        {
+            print("Creating new pin");
+        }               
         if (checkVector(inputVector)) {
             if (pinCreate)//Remove the old button
             {
@@ -266,6 +295,10 @@ public class GamePlay : MonoBehaviour  {
 
     private void removeOldComponents()//cleanup the previous guesses.
     {
+        if (verbose)
+        {
+            print("Removing Old Components");
+        }
         Destroy(guessButton.gameObject);
         Destroy(guessPin.gameObject);
 
@@ -293,7 +326,14 @@ public class GamePlay : MonoBehaviour  {
     private void removeOldImage()//deletes the duplicate image keeping the orignial
     {           
         Destroy(newGuessImage.gameObject);
-        clickable = true;    
+        clickable = true;
+        if (testing)
+        {//Generate 3 random tests
+           for(int i = 0; i <= 3; i++)
+            {
+                generateTestGuess();
+            }
+        }
     }
 
     private Sprite getRandomImage()//Gets a random image from a secondary array, then removes this image from that array so that you can't get the same image twice
