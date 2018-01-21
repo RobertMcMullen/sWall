@@ -18,6 +18,8 @@ public class OptionsMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        updateRounds(GamePlay.maxRound);
+        changeTime(GamePlay.waitTime);
         increaseRounds.onClick.AddListener(plusRoundsFunc);
         decreaseRounds.onClick.AddListener(decreaseRoundsFunc);
         increaseTime.onClick.AddListener(increaseTimeFunc);

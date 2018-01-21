@@ -28,7 +28,123 @@
     </description>
   </image>
   
+   <image>
+    <num>3</num>
+    <x>-198.6563</x>
+    <y>424.4531</y>
+    <description>
+      Behind small tree next to canal south of the exit door
+    </description>
+  </image>
   
+  <image>
+    <num>4</num>
+    <x>-260.5313</x>
+    <y>244.0781</y>
+    <description>
+      Next to UC loading bay looking towards footbath between Arch and ME
+    </description>
+  </image>
   
+ <image>
+    <num>5</num>
+    <x>-262.6563</x>
+    <y>229.125</y>
+    <description>
+      Facing loading bay at UC reading the sign on the pillar between the two lanes
+    </description>
+  </image>
   
+ <image>
+    <num>6</num>
+    <x>-258.0938</x>
+    <y>156.6563</y>
+    <description>
+       Facing doors to enter UC underneath the overhand of the loading bay area
+    </description>
+  </image>  
+  
+ <image>
+    <num>7</num>
+    <x>-253.0313</x>
+    <y>128.9062</y>
+    <description>
+       Stair to enter UC atrium behind Azrieli
+    </description>
+  </image>
+  
+<image>
+    <num>8</num>
+    <x>-241.4375</x>
+    <y>133.0938</y>
+    <description>
+       Looking down the footpath running parallel with the loading bay for UC
+    </description>
+  </image>
+  
+  <image>
+    <num>9</num>
+    <x>-92.06249</x>
+    <y>383.8125</y>
+    <description>
+       Back to the bike racks underneath Arch, facing ME
+    </description>
+  </image>
+
+<image>
+    <num>10</num>
+    <x>-239.25</x>
+    <y>130.625</y>
+    <description>
+       Facing guard rail for the path parallel with loading bay back to the stairs to enter atrium
+    </description>
+  </image>
+
+<image>
+    <num>11</num>
+    <x>-303.7969</x>
+    <y>203.4375</y>
+    <description>
+       Looking along North wall of AZ on the end of the North/South footpath
+    </description>
+  </image>
+
+<image>
+    <num>12</num>
+    <x>-368.2031</x>
+    <y>139.0312</y>
+    <description>
+       Facing the entrance to AZ with the West windows on the left, looking at the bike racks
+    </description>
+  </image>
+  
+  <image>
+    <num>13</num>
+    <x>-372.4219</x>
+    <y>50.06249</y>
+    <description>
+       Underneath the roof for AZ pavilion, with the entrance doors to the left
+    </description>
+  </image>
+  
+    <image>
+    <num>14</num>
+    <x>-406.4063</x>
+    <y>-13.49999</y>
+    <description>
+       Back to the bike racks between d.Tower and AZ.Pav. facing the 1st set of stairs on the east side of tower.
+    </description>
+  </image>
+  
+  <image>
+    <num>15</num>
+    <x>-361.3125</x>
+    <y>-75.23438</y>
+    <description>
+       At the end of the footpath between Az.Pav and D.Tower, with the entrance to Dunton Tower @ Quad level above.
+    </description>
+  </image>
+
+
+
 </location>

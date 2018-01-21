@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour {
     public Button play;//Play button that start the game when pressed
     public Button options;//Options button that bring up an options menu to change gameplay setting;
     public Button howToPlay;//On click it should either bring up instructions or launch a video
-    public Text Version;//Contains the version number in the lower left corner should be changed either manually or through code when changes have been made
+    public Text version;//Contains the version number in the lower left corner should be changed either manually or through code when changes have been made
 
 
     
@@ -50,15 +50,7 @@ public class MainMenu : MonoBehaviour {
         Debug.Log("Opening Instructions");
         //Need to create a tutorial 
     }
-    /*
-   function onGUI()
-    {
-        if (optionsMenu)
-        {
-
-        }
-    }
-    */
+   
 
 
 }

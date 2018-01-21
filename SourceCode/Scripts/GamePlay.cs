@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Xml;
 using System;
+using UnityEngine.SceneManagement;
 
 
 
@@ -15,12 +16,11 @@ using System;
 public class GamePlay : MonoBehaviour {
 
     //TODO Add touchScreen Vector movement  
-
     //TODO Add a teardown method 
     //Idea sounded good but most methods are helper/actionListeners so its not really possible
 
     //TODO Use PlayerPrefs
-    //TODO Reset Zoom on the nextRound ie make it full screen again
+    
 
 
     /********************************************/
@@ -32,11 +32,13 @@ public class GamePlay : MonoBehaviour {
     public RawImage pin;//The location of the image to guess pre-determined by data    
     public Button conf;//Confirm button placed underneath the guess made by the player
     public Button nextRoundButton;//Button to be pressed when the player confirms and is ready to play the following round.
+    public Button mainMenuButton;//Button for the endGame that allows the player to go to the main menu.
     public RawImage pinLocked;//Mirror of pin but with pink color
     public Image randomImageToGuess;//Contains a random image from a list that the user must guess its location    
     public List<Sprite> images;//List containing all the images that get displayed that the user must guess    
     public Text scoreText;//Contains the current score of the player, initialy starts at 00000
     public Text roundText;//Contains the current round of the player / the total round; ex 1/3 == round 1 of 3
+    public Text gameOverText;//Contains the words Game Over and is to be played at the end of the game once all the rounds have been played out.
     public TextAsset locations;
     public static GamePlay instance;
 
@@ -47,7 +49,7 @@ public class GamePlay : MonoBehaviour {
     private bool pinCreate;//Flag for creating pin, true==pin on screen false==no pins.
     private bool locked;//If true the guess is locked in and no more guesses allowed.
     private bool clickable;//Set to false while a picture is shown on screen then true once you can click
-    private bool testing = true;//If true then the pictures aren't random 
+    private bool testing = false;//If true then the pictures aren't random 
     private bool verbose = true;//If set to false then all logs disabled. If true logs will display to console
     
 
@@ -63,7 +65,7 @@ public class GamePlay : MonoBehaviour {
     /********************************************/
     private Vector3 pinVec; // Vector for the pin
     private Vector3 clickLocation;//Vector for holding the x,y,z location of the mouse click
-
+       
     /********************************************/
     /****************  Constants  ***************/
     /********************************************/
@@ -91,6 +93,12 @@ public class GamePlay : MonoBehaviour {
             Debug.Log("Waiting for " + waitTime + "s");
             Debug.Log("Playing " + maxRound + " Rounds");
         }
+        setRound(1, maxRound);
+        gameOverText.gameObject.SetActive(false);
+        mainMenuButton.gameObject.SetActive(false);
+        nextRoundButton.onClick.AddListener(nextRound);
+        mainMenuButton.onClick.AddListener(delegate { goTo("MainMenu"); });
+
         usedImageIndexes = new List<int>();
         instance = this;
         pinVec.x = pin.transform.position.x;
@@ -100,12 +108,13 @@ public class GamePlay : MonoBehaviour {
         locked = false;
         clickable = false;
         currentRound = 1;
-        nextRoundButton.onClick.AddListener(nextRound);
+        
         Debug.Log(Application.dataPath);
         playRound();
 
 
     }
+
     public void playRound()//Gets called to start the round
     {
         pin.enabled = false;
@@ -121,13 +130,15 @@ public class GamePlay : MonoBehaviour {
 
         foreach (XmlNode node in baseNode.ChildNodes)//Parse the xmlDoc for the specific image.
         {
+            /*
             if (verbose)
             {
-                Debug.Log("Index num = " + index);
+                //Debug.Log("Index num = " + index);
                 //Debug.Log("Node Name: " + node.Name);
                 //Debug.Log("Node Inner Text: " + node.SelectSingleNode("num").InnerText);
                 //Debug.Log("Node X: " + node.SelectSingleNode("x").InnerText);
             }
+            */
             if (Int32.Parse(node.SelectSingleNode("num").InnerText).Equals(index))
             {
                 float posX = float.Parse(node.SelectSingleNode("x").InnerText);
@@ -135,7 +146,7 @@ public class GamePlay : MonoBehaviour {
                 if (verbose)
                 {
                     Debug.Log("Real location X: " + posX);
-                    Debug.Log("Real location X: " + posY);
+                    Debug.Log("Real location Y: " + posY);
                 }
 
                 moveRealLocationPin(posX, posY);
@@ -154,6 +165,10 @@ public class GamePlay : MonoBehaviour {
         Destroy(guessButton.gameObject);
         guessDistance = getDistance(pinVec, clickLocation);
         calculateScore();
+        if (currentRound == maxRound)//Checks to see if the last round was just played
+        {           
+            endGame();
+        }
 
     }
 
@@ -265,7 +280,7 @@ public class GamePlay : MonoBehaviour {
         guessPin.transform.position = inputVector;
         guessPin.enabled = true;
         Vector3 confirmVect = inputVector;
-        Debug.Log("GUESS:" + confirmVect.x + "," + confirmVect.y);
+       
 
             if (inputVector.y < -1450)//If the location is too low we don't want to clip the confirm button.
         {
@@ -327,6 +342,8 @@ public class GamePlay : MonoBehaviour {
     {           
         Destroy(newGuessImage.gameObject);
         clickable = true;
+
+        /*
         if (testing)
         {//Generate 3 random tests
            for(int i = 0; i <= 3; i++)
@@ -334,6 +351,7 @@ public class GamePlay : MonoBehaviour {
                 generateTestGuess();
             }
         }
+        */
     }
 
     private Sprite getRandomImage()//Gets a random image from a secondary array, then removes this image from that array so that you can't get the same image twice
@@ -360,7 +378,7 @@ public class GamePlay : MonoBehaviour {
                 while (usedImageIndexes.Contains(index))
                 {
                     index = UnityEngine.Random.Range(0, count);
-                    Debug.Log("duplicate index: " + index);
+                   // Debug.Log("duplicate index: " + index);
                 }
                 usedImageIndexes.Add(index);                
                 Sprite currentImage = images[index];
@@ -403,14 +421,20 @@ public class GamePlay : MonoBehaviour {
         scoreText.GetComponent<Text>().text = newScore.ToString();
     }
 
+    private void centerCamera()//At the end of the round this method gets called to reset the camera to its orignial position with no zoom and no transforms
+    {
+        Vector3 resetPosition = new Vector3(0, 0, -10);
+        cam.transform.position = resetPosition;
+        cam.orthographicSize = 1920;//TODO make this not a specific value for now it should be fine
+        //This should be tested on the real monitors
+        
+    }
+
     public void nextRound()//Load up the next image and play another round incrementing the round and score.
     {
-        clickable = false;
-        if(currentRound == maxRound)//Checks to see if the last round was just played
-        {
-            endGame();
-        }
+        clickable = false;        
         currentRound += 1;
+        centerCamera();
         showPicture();
         pin.enabled = false;
         Invoke("removeOldImage", waitTime);//Invokes the method removeOldImage 'waitTime' from now
@@ -421,9 +445,30 @@ public class GamePlay : MonoBehaviour {
         
        
     }
+    public void goTo(String scene)//Takes the player to the main menu
+    {//Depending on the size of the game, this method could adapt to take a parameter of the location to go to rather than only the main menu.
+
+        SceneManager.LoadScene(scene);
+    }
+    
 
     public void endGame()//Called once the max rounds have been played.
     {
+        /*Once the game ends the following take effect:
+         * 
+         * 1. Game Over text is displayed onto thte screen
+         * 2. The Next Round button can be re-used but with the words Play Again?
+         * 2a.Another button should be added next to it saying main menu?
+         * 3. The contents of the screen should be locked aside from those 2 buttons.
+         * */
+            
+        print("The game is over");
+        gameOverText.gameObject.SetActive(true);
+        mainMenuButton.gameObject.SetActive(true);
+        nextRoundButton.GetComponentInChildren<Text>().text = "Play Again?";
+        nextRoundButton.onClick.AddListener(delegate { goTo("GamePlayRound"); });
+        
+        
 
     }
 
