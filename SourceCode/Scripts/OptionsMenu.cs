@@ -14,6 +14,7 @@ public class OptionsMenu : MonoBehaviour {
     public Button done;
     public Text roundText;
     public Text timeText;
+    public Button[] allButtons;
 
 
 	// Use this for initialization
@@ -25,6 +26,9 @@ public class OptionsMenu : MonoBehaviour {
         increaseTime.onClick.AddListener(increaseTimeFunc);
         decreaseTime.onClick.AddListener(decreaseTimeFunc);
         done.onClick.AddListener(finished);
+
+        Theme currentTheme = new Theme();
+        currentTheme.updateColors(allButtons,null);
     }
     private void finished()
     {

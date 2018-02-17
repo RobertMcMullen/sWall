@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AllThemes>
+  
+  <theme>
+	<num>0</num>
+	<NormalColor>0,204,204</NormalColor>	
+	<HighlightedColor>128,255,255</HighlightedColor>	
+	<PressedColor>51,102,102</PressedColor>
+	<DisabledColor>55,66,77</DisabledColor>
+  </theme>
+  
+  <theme>
+	<num>1</num>
+	<NormalColor>0,204,204</NormalColor>	
+	<HighlightedColor>128,255,255</HighlightedColor>	
+	<PressedColor>51,102,102</PressedColor>
+	<DisabledColor>55,66,77</DisabledColor>
+  </theme>
+   
+  
+  
+</AllThemes>
+
+  
+  
+  

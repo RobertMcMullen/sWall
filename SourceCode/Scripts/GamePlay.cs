@@ -15,11 +15,8 @@ using UnityEngine.SceneManagement;
 
 public class GamePlay : MonoBehaviour {
 
-    //TODO Add touchScreen Vector movement  
-    //TODO Add a teardown method 
-    //Idea sounded good but most methods are helper/actionListeners so its not really possible
-
-    //TODO Use PlayerPrefs
+    //TODO Add touchScreen Vector movement      
+    //TODO Use PlayerPrefs(Optional)
     
 
 
@@ -39,8 +36,9 @@ public class GamePlay : MonoBehaviour {
     public Text scoreText;//Contains the current score of the player, initialy starts at 00000
     public Text roundText;//Contains the current round of the player / the total round; ex 1/3 == round 1 of 3
     public Text gameOverText;//Contains the words Game Over and is to be played at the end of the game once all the rounds have been played out.
-    public TextAsset locations;
-    public static GamePlay instance;
+    public Button[] allButtons;//Contains an array for all the buttons in the game
+    public Text[] allText;//Contains an array for all the text fields in the game
+
 
 
     /********************************************/
@@ -61,7 +59,7 @@ public class GamePlay : MonoBehaviour {
     private Image newGuessImage;//Contains the new created duplicate of the placeHolder image.
 
     /********************************************/
-    /****************  Vecotors  ****************/
+    /****************  Vectors  *****************/
     /********************************************/
     private Vector3 pinVec; // Vector for the pin
     private Vector3 clickLocation;//Vector for holding the x,y,z location of the mouse click
@@ -93,14 +91,16 @@ public class GamePlay : MonoBehaviour {
             Debug.Log("Waiting for " + waitTime + "s");
             Debug.Log("Playing " + maxRound + " Rounds");
         }
+        Theme currentTheme = new Theme();
+        currentTheme.updateColors(allButtons,allText);
+
         setRound(1, maxRound);
         gameOverText.gameObject.SetActive(false);
         mainMenuButton.gameObject.SetActive(false);
         nextRoundButton.onClick.AddListener(nextRound);
         mainMenuButton.onClick.AddListener(delegate { goTo("MainMenu"); });
 
-        usedImageIndexes = new List<int>();
-        instance = this;
+        usedImageIndexes = new List<int>();        
         pinVec.x = pin.transform.position.x;
         pinVec.y = pin.transform.position.y;
         pinVec.z = 0;
@@ -125,7 +125,7 @@ public class GamePlay : MonoBehaviour {
     private void setXY(int index)//Get the xy coordinates from an XML doc for each picture 
     {
         XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load(Application.dataPath + "/Scripts/Locations.xml");//This may cause an error after building, not sure
+        xmlDoc.Load(Application.dataPath + "/Scripts/Locations.xml");
         var baseNode = xmlDoc.DocumentElement;
 
         foreach (XmlNode node in baseNode.ChildNodes)//Parse the xmlDoc for the specific image.
