@@ -124,8 +124,11 @@ public class GamePlay : MonoBehaviour {
 
     private void setXY(int index)//Get the xy coordinates from an XML doc for each picture 
     {
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);//Contains the path to myDocuments, will read the file that is in there
+        path = path + "\\" + "Themes" + "\\" + "Locations.xml";
         XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.Load(Application.dataPath + "/Scripts/Locations.xml");
+        //xmlDoc.Load(Application.dataPath + "/Scripts/Locations.xml");
+        xmlDoc.Load(path);
         var baseNode = xmlDoc.DocumentElement;
 
         foreach (XmlNode node in baseNode.ChildNodes)//Parse the xmlDoc for the specific image.

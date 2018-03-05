@@ -11,10 +11,18 @@
   
   <theme>
 	<num>1</num>
-	<NormalColor>0,204,204</NormalColor>	
-	<HighlightedColor>128,255,255</HighlightedColor>	
-	<PressedColor>51,102,102</PressedColor>
-	<DisabledColor>55,66,77</DisabledColor>
+	<NormalColor>244,32,32</NormalColor>	
+	<HighlightedColor>253,74,74</HighlightedColor>	
+	<PressedColor>188,12,12</PressedColor>
+	<DisabledColor>56,2,6</DisabledColor>
+  </theme>
+  
+    <theme>
+	<num>2</num>
+	<NormalColor>1,182,15</NormalColor>	
+	<HighlightedColor>13,255,13</HighlightedColor>	
+	<PressedColor>42,193,4</PressedColor>
+	<DisabledColor>1,73,8</DisabledColor>
   </theme>
    
   

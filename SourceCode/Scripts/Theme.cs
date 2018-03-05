@@ -8,13 +8,13 @@ using UnityEngine.UI;
 
 public class Theme
 {
-    //TODO Figure out a way to select which theme, OPTIONS menu could be an idea
+    
 
     //Checks file for the right theme
     public string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);//Contains the path to myDocuments, will read the file that is in there
     public string folderName = "Themes";
     public string fileName = "Themes.xml";
-    public int themeNumber = 0;//Default it to select 1st theme
+    public static int themeNumber;//Default it to select 1st theme
 
     private Color normalCol;
     private Color highCol;
@@ -29,8 +29,9 @@ public class Theme
         path = path + "\\" + folderName + "\\" + fileName;
         allCol = new Color[4];        
         readThemes();   
-        
     }
+
+
     
     private void readThemes()
     {
@@ -39,6 +40,8 @@ public class Theme
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(path);
             var baseNode = xmlDoc.DocumentElement;
+
+            Debug.Log("searching for theme " + themeNumber);
 
             foreach (XmlNode node in baseNode.ChildNodes)//Parse the xmlDoc for the specific image.
             {
@@ -61,7 +64,7 @@ public class Theme
                 }
             }
         }
-        catch (FileNotFoundException e)
+        catch (Exception)
         {
             Debug.Log("FileDoesNotExist");
             string[] normalRGB = { "0", "204", "204" };
@@ -111,6 +114,7 @@ public class Theme
 
     public void updateColors(Button[] allButtons, Text[] allText)
     {
+        readThemes();
         Color[] themeInUse = getColArr();
         for (int j = 0; j < allButtons.Length; j++)
         {
@@ -129,5 +133,10 @@ public class Theme
                 
             }
         }
+    }
+
+    public void updateTheme(int themeNum)
+    {
+        themeNumber = themeNum;
     }
 }
