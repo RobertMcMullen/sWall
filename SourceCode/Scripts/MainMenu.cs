@@ -48,6 +48,7 @@ public class MainMenu : MonoBehaviour {
     {
        
         string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "Themes" + "\\" + "Locations.xml";//Contains the path to myDocuments, will read the file that is in there
+        Debug.Log(path);
         if (System.IO.File.Exists(path))//Check to see that the location folders exists before starting the game.
         {
             Debug.Log("Launching Game");

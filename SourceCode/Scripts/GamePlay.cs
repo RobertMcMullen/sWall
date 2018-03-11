@@ -15,11 +15,6 @@ using UnityEngine.SceneManagement;
 
 public class GamePlay : MonoBehaviour {
 
-    //TODO Add touchScreen Vector movement      
-    //TODO Use PlayerPrefs(Optional)
-    
-
-
     /********************************************/
     /********  Public Variables  ****************/
     /********************************************/
@@ -167,7 +162,7 @@ public class GamePlay : MonoBehaviour {
         guessPin.texture = pinLocked.texture;
         Destroy(guessButton.gameObject);
         guessDistance = getDistance(pinVec, clickLocation);
-        calculateScore();
+        calculateScoreLog();
         if (currentRound == maxRound)//Checks to see if the last round was just played
         {           
             endGame();
@@ -400,7 +395,7 @@ public class GamePlay : MonoBehaviour {
         }
         else if (guessDistance > guessMaxBuffer)//This can only happen if the the real vs. the guess is corner to corner ie: worst case;
         {                                       //This is considered a complete loss and should be a 0, doubt this will ever happen
-            score = 0;
+            score += 0;
         }
         else //Base case for scoring is to subract distance from the max score.
         {
@@ -411,6 +406,70 @@ public class GamePlay : MonoBehaviour {
         int scoreInt = (int)score;//Casting to int removes all the digits after the decimal       
         setScore(scoreInt);
                
+
+    }
+    private void calculateScoreLog()//Calculates the score using a logarithmic scoring style
+    {
+        Debug.Log(guessDistance);
+        score += (float)(Math.Log10(guessDistance / maxScore)*-1111);
+        int scoreInt = (int)score;
+        setScore(scoreInt);
+    }
+    private void calculateScoreRange()//Calculates the score by using ranges
+    {
+        
+        int guessDistanceCompare = (int)guessDistance;
+        Debug.Log(guessDistanceCompare);
+
+        if (guessDistanceCompare > 2000)
+        {
+            score += 0;
+            Debug.Log("No Score");
+        }
+        else if (guessDistanceCompare > 1500 && guessDistance <=2000)
+        {
+            score += maxScore * 1 / 8;
+            Debug.Log("1500-2000");
+        }
+        else if (guessDistanceCompare > 1000 && guessDistance <= 1500)
+        {
+            score += maxScore * 2 / 8;
+            Debug.Log("1000-1500");
+        }
+        else if (guessDistanceCompare > 800 && guessDistance <=1000)
+        {
+            score += maxScore * 3 / 8;
+            Debug.Log("800-1000");
+        }
+        else if (guessDistanceCompare > 500 && guessDistance <= 800)
+        {
+            score += maxScore * 4 / 8;
+            Debug.Log("500-800");
+        }
+        else if (guessDistanceCompare > 200 && guessDistance <= 500)
+        {
+            score += maxScore * 5 / 8;
+            Debug.Log("200-500");
+        }
+        else if (guessDistanceCompare > 100 && guessDistance <=200)
+        {
+            score += maxScore * 6 / 8;
+            Debug.Log("100-200");
+        }
+        else if (guessDistanceCompare > 50 && guessDistance <= 100)
+        {
+            score += maxScore * 7 / 8;
+            Debug.Log("50-100");
+        }
+        else
+        {
+            score += maxScore;
+            Debug.Log("Max Score");
+        }
+
+        int scoreInt = (int)score;//Casting to int removes all the digits after the decimal       
+        setScore(scoreInt);
+        Debug.Log("Score is: " + score);
 
     }
 
