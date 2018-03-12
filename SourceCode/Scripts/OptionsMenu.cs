@@ -11,9 +11,12 @@ public class OptionsMenu : MonoBehaviour {
     public Button decreaseRounds;
     public Button increaseTime;
     public Button decreaseTime;
+    public Button increaseDiff;
+    public Button decreaseDiff;
     public Button done;
     public Text roundText;
     public Text timeText;
+    public Text difficultyText;
     public Button[] allButtons;
 
 
@@ -21,10 +24,13 @@ public class OptionsMenu : MonoBehaviour {
 	void Start () {
         updateRounds(GamePlay.maxRound);
         changeTime(GamePlay.waitTime);
+        updateDiff(GamePlay.currentDifficulty);
         increaseRounds.onClick.AddListener(plusRoundsFunc);
         decreaseRounds.onClick.AddListener(decreaseRoundsFunc);
         increaseTime.onClick.AddListener(increaseTimeFunc);
         decreaseTime.onClick.AddListener(decreaseTimeFunc);
+        increaseDiff.onClick.AddListener(increaseDifficulty);
+        decreaseDiff.onClick.AddListener(decreaseDifficulty);
         done.onClick.AddListener(finished);
 
         Theme currentTheme = new Theme();
@@ -62,6 +68,30 @@ public class OptionsMenu : MonoBehaviour {
         }
         
     }
+    private void increaseDifficulty()
+    {
+        if(GamePlay.currentDifficulty == 3)
+        {
+            //Don't increase
+        }
+        else
+        {
+            GamePlay.currentDifficulty += 1;
+            updateDiff(GamePlay.currentDifficulty);
+        }
+    }
+    private void decreaseDifficulty()
+    {
+        if (GamePlay.currentDifficulty == 1)
+        {
+            //Don't increase
+        }
+        else
+        {
+            GamePlay.currentDifficulty -= 1;
+            updateDiff(GamePlay.currentDifficulty);
+        }
+    }
     private void updateRounds(int rounds)
     {
         roundText.GetComponent<Text>().text = "Rounds: " + rounds.ToString();
@@ -69,6 +99,10 @@ public class OptionsMenu : MonoBehaviour {
     private void changeTime(float time)
     {
         timeText.GetComponent<Text>().text = "View Time: "+ time.ToString()+"s";
+    }
+    private void updateDiff(int diff)
+    {
+        difficultyText.GetComponent<Text>().text = "Difficulty : " + diff.ToString();
     }
 
 	

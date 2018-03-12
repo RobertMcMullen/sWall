@@ -30,6 +30,7 @@ public class GamePlay : MonoBehaviour {
     public List<Sprite> images;//List containing all the images that get displayed that the user must guess    
     public Text scoreText;//Contains the current score of the player, initialy starts at 00000
     public Text roundText;//Contains the current round of the player / the total round; ex 1/3 == round 1 of 3
+    public Text distanceText;//Contains the current distance for the previous guess, initially starts at 0000 since the max guess can have 4 digits.
     public Text gameOverText;//Contains the words Game Over and is to be played at the end of the game once all the rounds have been played out.
     public Button[] allButtons;//Contains an array for all the buttons in the game
     public Text[] allText;//Contains an array for all the text fields in the game
@@ -76,6 +77,7 @@ public class GamePlay : MonoBehaviour {
     private int currentRound;//Holds the current round of the game
     public static int maxRound = 3;//Contains the max rounds to be played for 1 match   
     public static float waitTime = 5.0f; // Float for how long the picture stays up on the screen(in seconds)
+    public static int currentDifficulty = 1;
 
 
 
@@ -162,7 +164,23 @@ public class GamePlay : MonoBehaviour {
         guessPin.texture = pinLocked.texture;
         Destroy(guessButton.gameObject);
         guessDistance = getDistance(pinVec, clickLocation);
-        calculateScoreLog();
+        setDistance((int)guessDistance);
+
+        //SCORING
+        if(currentDifficulty == 3)
+        {
+            calculateScoreLog();//Log scoring = Hardest
+        }
+        else if(currentDifficulty == 2)
+        {
+            calculateScoreRange();//Range Scoring = easy/hard
+        }
+        else
+        {
+            calculateScore();//Linear scoring = easiest
+        }
+
+        
         if (currentRound == maxRound)//Checks to see if the last round was just played
         {           
             endGame();
@@ -213,6 +231,8 @@ public class GamePlay : MonoBehaviour {
             clickLocation.z = 0;
             clickLocation.y += 45;//Need to offset since the point is at the bottom of the image. Shift up to move the center of the image to the bottom point.
             createNewPin(clickLocation);
+            Debug.Log("X = " + clickLocation.x);
+            Debug.Log("Y = " + clickLocation.y);
         }
 
     }
@@ -481,6 +501,11 @@ public class GamePlay : MonoBehaviour {
     public void setScore(int newScore)//Changes how much score the player has
     {
         scoreText.GetComponent<Text>().text = newScore.ToString();
+    }
+
+    public void setDistance(int distance)
+    {
+        distanceText.GetComponent<Text>().text = distance.ToString();
     }
 
     private void centerCamera()//At the end of the round this method gets called to reset the camera to its orignial position with no zoom and no transforms

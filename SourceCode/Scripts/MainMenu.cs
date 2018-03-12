@@ -65,7 +65,7 @@ public class MainMenu : MonoBehaviour {
     private void openHowToPlay()
     {
         Debug.Log("Opening Instructions");
-        //Need to create a tutorial 
+        SceneManager.LoadScene("HowToPlay");
     }   
 
     private void updateTheme(int themeNum)

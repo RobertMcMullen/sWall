@@ -145,6 +145,194 @@
     </description>
   </image>
 
+  <image>
+    <num>16</num>
+    <x>369</x>
+    <y>-63.656</y>
+    <description>  
+      Between dun. Tower at the end by the bike racks
+    </description>
+  </image>
+  
+  <image>
+    <num>17</num>
+    <x>357.2188</x>
+    <y>-71.75003</y>
+    <description>  
+      Between dun. Tower at the end by the bike racks
+    </description>
+  </image>
+  
+   <image>
+    <num>18</num>
+    <x>-431.1406</x>
+    <y>11.07812</y>
+    <description>  
+      Between dun. AP, facing the road, back to the bike rack area
+    </description>
+  </image>
+  
+  <image>
+    <num>19</num>
+    <x>-409.5</x>
+    <y>-97.12503</y>
+    <description>  
+     Other side of dun. facing the wall supporting the walkway from the quad to tower. 
+    </description>
+  </image>
+  
+  <image>
+    <num>20</num>
+    <x>-451.5313</x>
+    <y>-105.7188</y>
+    <description>  
+     Garbage area by dun. facing the doors to the tunnel with tthe library above
+    </description>
+  </image>
 
+  <image>
+    <num>21</num>
+    <x>-549.1563</x>
+    <y>-208.2344</y>
+    <description>  
+     Near the indent on the library on is NNW side.
+    </description>
+  </image>
+  
+   <image>
+    <num>22</num>
+    <x>-572.6094</x>
+    <y>-240.5938</y>
+    <description>  
+     Next to image 21, facing the steps into the library
+    </description>
+  </image>
+  
+  <image>
+    <num>23</num>
+    <x>-601.375</x>
+    <y>-290.125</y>
+    <description>  
+     On library road, next to the library, feet are at the end of a grate on the sidewalk
+    </description>
+  </image>
 
+  <image>
+    <num>24</num>
+    <x>-627.375</x>
+    <y>-363.375</y>
+    <description>  
+     South side of library, facing SA
+    </description>
+  </image>
+  
+  <image>
+    <num>25</num>
+    <x>-545.625</x>
+    <y>-456.375</y>
+    <description>  
+     South side of SA, facing loeb, back to the 1st set of stairs
+    </description>
+  </image>
+  
+    <image>
+    <num>26</num>
+    <x>-545.625</x>
+    <y>-456.375</y>
+    <description>  
+     Same as image 25, except front facing the steps
+    </description>
+  </image>
+  
+   <image>
+    <num>27</num>
+    <x>-510.0469</x>
+    <y>-589.2813</y>
+    <description>  
+     Facing VSIM building, facing in between the 2 buildings
+    </description>
+  </image>
+  
+  <image>
+    <num>28</num>
+    <x>-659.6719</x>
+    <y>-672.1094</y>
+    <description>  
+     Facing VSIM building, Right hand side is the garbage area
+    </description>
+  </image>
+  
+   <image>
+    <num>29</num>
+    <x>-726.1719</x>
+    <y>-770.9063</y>
+    <description>  
+     Facing library road walkway on the col. by end of campus, between the library parking and col by entrance
+    </description>
+  </image>
+  
+  <image>
+    <num>30</num>
+    <x>-773.0781</x>
+    <y>-931.2188</y>
+    <description>  
+     Path between library and col. By, facing Col.By Dr.
+    </description>
+  </image>
+  
+   
+  <image>
+    <num>31</num>
+    <x>-558.7344</x>
+    <y>-1015.828</y>
+    <description>  
+     Facing walkway along water by university dr. At the entrance to the path the moment the street side becomes covered by foliage.
+    </description>
+  </image>
+  
+    <image>
+    <num>32</num>
+    <x>-556.9531</x>
+    <y>-810.3906</y>
+    <description>  
+     Area by VSIM building near university dr. 
+    </description>
+  </image>
+
+  <image>
+    <num>33</num>
+    <x>-54.70312</x>
+    <y>-403.4844</y>
+    <description>  
+     Between Arch. and ME facing ME
+    </description>
+  </image>
+  
+    <image>
+    <num>35</num>
+    <x>-536.6875</x>
+    <y>-671.75</y>
+    <description>  
+     Back area of VSIM building
+    </description>
+  </image>
+ 
+    <image>
+    <num>36</num>
+    <x>-479.0938</x>
+    <y>-679.1719</y>
+    <description>  
+     Facing the south side of the VSIM building
+    </description>
+  </image>
+  
+<image>
+    <num>37</num>
+    <x>-417.6406</x>
+    <y>-614.1563</y>
+    <description>  
+     Facing garbage area of loeb
+    </description>
+  </image>
+  
 </location>
