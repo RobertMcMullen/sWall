@@ -326,13 +326,183 @@
     </description>
   </image>
   
-<image>
+    <image>
     <num>37</num>
     <x>-417.6406</x>
     <y>-614.1563</y>
     <description>  
      Facing garbage area of loeb
     </description>
-  </image>
+    </image>
   
+ <image>
+    <num>38</num>
+    <x>-368.5781</x>
+    <y>-613.1094</y>
+    <description>  
+     Facing the front side of loeb by the entrance to the south side of the loeb food area
+    </description>
+    </image>
+  
+ <image>
+    <num>39</num>
+    <x>-289.3125</x>
+    <y>-641.9063</y>
+    <description>  
+    Facing the front side seating area to loeb taken from the sidewalk
+    </description>
+    </image>
+  
+<image>
+    <num>40</num>
+    <x>-136.4219</x>
+    <y>-519.5938</y>
+    <description>  
+    Along the university drive facing construction, there is only 1 tree along this path that is between the path and the road.
+    </description>
+    </image>
+
+<image>
+    <num>41</num>
+    <x>-30</x>
+    <y>-449.625</y>
+    <description>  
+    Small lookout path on the rideau, right next to a no parking sign
+    </description>
+    </image>
+
+<image>
+    <num>42</num>
+    <x>-53.59373</x>
+    <y>-449.2344</y>
+    <description>  
+    Looking at herzberg building
+    </description>
+    </image>
+
+  <image>
+    <num>43</num>
+    <x>-30.14063</x>
+    <y>-335.8281</y>
+    <description>  
+    Looking at south side of herzberg building, picture is facing west
+    </description>
+    </image>
+
+ <image>
+    <num>44</num>
+    <x>108.6563</x>
+    <y>-166.9063</y>
+    <description>  
+    Bike racks at herzberg, between river building and HB. Picture taken facing east
+    </description>
+    </image>
+
+<image>
+    <num>45</num>
+    <x>108.6563</x>
+    <y>-166.9063</y>
+    <description>  
+    Same as 44
+    </description>
+    </image>
+  
+  <image>
+    <num>46</num>
+    <x>161.8125</x>
+    <y>-47.46873</y>
+    <description>  
+    Facing North, Facing the length of Steacie building
+    </description>
+    </image>
+  
+   <image>
+    <num>47</num>
+    <x>334.4063</x>
+    <y>-14.21874</y>
+    <description>  
+    Underpass for O-Train, building in background is Robertson Hall
+    </description>
+    </image>
+  
+  <image>
+    <num>48</num>
+    <x>-0.2187435</x>
+    <y>405.375</y>
+    <description>  
+    Facing toward rideau river, building on right is Arch. 
+    </description>
+    </image>
+  
+  <image>
+    <num>49</num>
+    <x>345</x>
+    <y>78.84375</y>
+    <description>  
+    Parking garage on the right, in the grass field by robertson hall, just off the walkway a bit towards the tracks
+    </description>
+    </image>
+  
+   <image>
+    <num>50</num>
+    <x>358.3438</x>
+    <y>154.3125</y>
+    <description>  
+    Taken on the corner of the parking garage. Facing towards athletics(general direction)
+    </description>
+    </image>
+  
+  <image>
+    <num>51</num>
+    <x>395.5313</x>
+    <y>167.6563</y>
+    <description>  
+    Back is the the parking garage
+    </description>
+    </image>
+  
+  <image>
+    <num>52</num>
+    <x>534.875</x>
+    <y>212.7187</y>
+    <description>  
+    Facing the stairs in the parking garage, back to robertson hall
+    </description>
+    </image>
+
+  <image>
+    <num>53</num>
+    <x>536.125</x>
+    <y>180.9375</y>
+    <description>  
+    Facing the grassy area west of robertson hall, pillars belong to roberston hall
+    </description>
+    </image>
+
+   <image>
+    <num>54</num>
+    <x>540.0625</x>
+    <y>321.5938</y>
+    <description>  
+     Not sure what building this is, its the one north of the parking garage; back is to the entrance of the parking.
+    </description>
+    </image>
+  
+  <image>
+    <num>55</num>
+    <x>540.0625</x>
+    <y>321.5938</y>
+    <description>  
+     Facing the west; parking garage is still on the left
+    </description>
+    </image>
+
+   <image>
+    <num>56</num>
+    <x>584.0313</x>
+    <y>393.3438</y>
+    <description>  
+    Not sure what this building is, (Maintenance?) its the one west of the ice house accross the street. Picture taken facing north
+    </description>
+    </image>   
 </location>

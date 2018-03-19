@@ -32,11 +32,10 @@ public class GamePlay : MonoBehaviour {
     public Text roundText;//Contains the current round of the player / the total round; ex 1/3 == round 1 of 3
     public Text distanceText;//Contains the current distance for the previous guess, initially starts at 0000 since the max guess can have 4 digits.
     public Text gameOverText;//Contains the words Game Over and is to be played at the end of the game once all the rounds have been played out.
+    public LineRenderer guessDistanceLine;//This is the line that tethers the guess and the correct location together.
     public Button[] allButtons;//Contains an array for all the buttons in the game
     public Text[] allText;//Contains an array for all the text fields in the game
-
-
-
+    
     /********************************************/
     /***************   Flags  *******************/
     /********************************************/
@@ -46,14 +45,14 @@ public class GamePlay : MonoBehaviour {
     private bool testing = false;//If true then the pictures aren't random 
     private bool verbose = true;//If set to false then all logs disabled. If true logs will display to console
     
-
     /********************************************/
-    /************  Pins & Buttons  **************/
+    /*********  Pins, Buttons & Lines  **********/
     /********************************************/
     private Button guessButton;//Confirm button for when making a guess
     private RawImage guessPin;//holds the pink texture of the pin
     private Image newGuessImage;//Contains the new created duplicate of the placeHolder image.
-
+    private List<LineRenderer> allLines;//Stores all the lines so that they can be deleted after
+    
     /********************************************/
     /****************  Vectors  *****************/
     /********************************************/
@@ -77,7 +76,8 @@ public class GamePlay : MonoBehaviour {
     private int currentRound;//Holds the current round of the game
     public static int maxRound = 3;//Contains the max rounds to be played for 1 match   
     public static float waitTime = 5.0f; // Float for how long the picture stays up on the screen(in seconds)
-    public static int currentDifficulty = 1;
+    public static int currentDifficulty = 1;//The current difficulty for the match
+    private Dictionary<Vector3, Vector3> allRoundResponses;//Contains the guess,and real location for all the rounds played
 
 
 
@@ -89,11 +89,15 @@ public class GamePlay : MonoBehaviour {
             Debug.Log("Playing " + maxRound + " Rounds");
         }
         Theme currentTheme = new Theme();
+        allRoundResponses = new Dictionary<Vector3, Vector3>();
         currentTheme.updateColors(allButtons,allText);
+        allLines = new List<LineRenderer>();
 
         setRound(1, maxRound);
         gameOverText.gameObject.SetActive(false);
         mainMenuButton.gameObject.SetActive(false);
+       
+
         nextRoundButton.onClick.AddListener(nextRound);
         mainMenuButton.onClick.AddListener(delegate { goTo("MainMenu"); });
 
@@ -115,6 +119,7 @@ public class GamePlay : MonoBehaviour {
     public void playRound()//Gets called to start the round
     {
         pin.enabled = false;
+        hideLine();
         showPicture();
         Invoke("removeOldImage", waitTime);//Invokes the method removeOldImage 'waitTime' from now
     }
@@ -156,7 +161,7 @@ public class GamePlay : MonoBehaviour {
 
     }
 
-    public void confirmLocation()//action listenere class called when confirm button clicked
+    public void confirmLocation()//action listener class called when confirm button clicked
     {
         pin.enabled = true;
         nextRoundButton.gameObject.SetActive(true);
@@ -165,9 +170,14 @@ public class GamePlay : MonoBehaviour {
         Destroy(guessButton.gameObject);
         guessDistance = getDistance(pinVec, clickLocation);
         setDistance((int)guessDistance);
+        //remove the offset so the line goes from the points to points rather than the center of the pins
+        
+        createLine(pinVec, clickLocation);
+        allRoundResponses.Add(pinVec, clickLocation);
+                
 
         //SCORING
-        if(currentDifficulty == 3)
+        if (currentDifficulty == 3)
         {
             calculateScoreLog();//Log scoring = Hardest
         }
@@ -300,7 +310,7 @@ public class GamePlay : MonoBehaviour {
         Vector3 confirmVect = inputVector;
        
 
-            if (inputVector.y < -1450)//If the location is too low we don't want to clip the confirm button.
+        if (inputVector.y < -1450)//If the location is too low we don't want to clip the confirm button.
         {
             confirmVect.y = inputVector.y + 150; //flip it so that the confirm button is on the top rather than below so it doesn't get clipped
         }        
@@ -406,7 +416,7 @@ public class GamePlay : MonoBehaviour {
         }
     }   
     
-    private void calculateScore()
+    private void calculateScore()//Linear scoring based on distance
     {
         
         if (guessDistance < guessMinBuffer) //Small buffer to give a perfect score.
@@ -492,6 +502,60 @@ public class GamePlay : MonoBehaviour {
         Debug.Log("Score is: " + score);
 
     }
+    private void calculateScoreViewTime()//Calculates the score considering distance and view time
+    {
+        //NOT IMPLEMENTED, given more time this would be the next addition to the game. 
+        float baseViewTime = 5f;//The average view time is 5 sec
+        //Multiplier kicks in when viewing for less than 5seconds.
+        float deltaTime = waitTime - baseViewTime;
+
+    }
+
+    private void createLine(Vector3 pos1,Vector3 pos2) //Creates a line between the 2 positions, this line represents the distance.
+    {
+        pos1.y -= 45;
+        pos2.y -= 45;
+        guessDistanceLine.positionCount = 2;
+        guessDistanceLine.SetPosition(1, pos1);
+        guessDistanceLine.SetPosition(0, pos2);
+        guessDistanceLine.gameObject.SetActive(true);
+    }
+    
+    private void createMultiLines(Vector3 pos1,Vector3 pos2)//Creates all the lines between all the previous guesses
+    {
+        
+        pos1.y -= 45;
+        pos2.y -= 45;
+        LineRenderer lr = new LineRenderer();
+        lr = Instantiate(guessDistanceLine);
+        lr.positionCount = 2;
+        lr.SetPosition(1, pos1);
+        lr.SetPosition(0, pos2);
+        lr.gameObject.SetActive(true);
+        allLines.Add(lr);
+
+    }
+
+    private void addPin(Vector3 location, bool guess)//This is for the end game summary , if guess is true then its a guess style pin
+    {
+        RawImage addedPin;
+        if (guess) {
+            addedPin = Instantiate(pinLocked);
+        }
+        else
+        {
+            addedPin = Instantiate(pin);
+        }  
+        addedPin.transform.SetParent(background.transform);
+        addedPin.transform.position = location;
+        addedPin.gameObject.SetActive(true);
+
+    }
+
+    private void hideLine()
+    {
+        guessDistanceLine.gameObject.SetActive(false);
+    }//Removes the single instance of the line.
 
     public void setRound(int roundNum,int totalRound)//Setter for the text box, roundNum is the current round and totalRound is the overal rounds
     {
@@ -506,19 +570,20 @@ public class GamePlay : MonoBehaviour {
     public void setDistance(int distance)
     {
         distanceText.GetComponent<Text>().text = distance.ToString();
-    }
+    }//Sets the distance to the GUI
 
     private void centerCamera()//At the end of the round this method gets called to reset the camera to its orignial position with no zoom and no transforms
     {
         Vector3 resetPosition = new Vector3(0, 0, -10);
         cam.transform.position = resetPosition;
-        cam.orthographicSize = 1920;//TODO make this not a specific value for now it should be fine
+        cam.orthographicSize = 1920;
         //This should be tested on the real monitors
         
     }
 
     public void nextRound()//Load up the next image and play another round incrementing the round and score.
     {
+        guessDistanceLine.gameObject.SetActive(false);
         clickable = false;        
         currentRound += 1;
         centerCamera();
@@ -543,10 +608,11 @@ public class GamePlay : MonoBehaviour {
     {
         /*Once the game ends the following take effect:
          * 
-         * 1. Game Over text is displayed onto thte screen
-         * 2. The Next Round button can be re-used but with the words Play Again?
-         * 2a.Another button should be added next to it saying main menu?
-         * 3. The contents of the screen should be locked aside from those 2 buttons.
+         * 1.  Game Over text is displayed onto the screen
+         * 2.  The Next Round button can be re-used but with the words Play Again?
+         * 2a. Another button offers "main menu?"
+         * 3.  The contents of the screen should be locked aside from those 2 buttons.
+         * 4.  If the user chooses play again then it restarts the class, this takes care of cleaning up and reseting everything.
          * */
             
         print("The game is over");
@@ -554,8 +620,14 @@ public class GamePlay : MonoBehaviour {
         mainMenuButton.gameObject.SetActive(true);
         nextRoundButton.GetComponentInChildren<Text>().text = "Play Again?";
         nextRoundButton.onClick.AddListener(delegate { goTo("GamePlayRound"); });
-        
-        
+        foreach (KeyValuePair<Vector3, Vector3> entry in allRoundResponses)
+        {
+            createMultiLines(entry.Key, entry.Value);
+            addPin(entry.Key,false);
+            addPin(entry.Value,true);
+        }
+
+
 
     }
 
