@@ -19,8 +19,8 @@ namespace sWallActivityManager
         private string activitiesDirectoryPath;
 
         // HACK Confirm actual IPs and ports
-        private string[] slaveIPs = new string[] { "127.0.0.1", "127.0.0.1", "127.0.0.1", "127.0.0.1" };
-        // HACK Port 69 is already used on the sWall
+        private string[] slaveIPs = new string[] { "127.0.0.1", "126.0.0.1", "126.0.0.1", "126.0.0.1" };
+        // HACK Confirm free ports
         private int[] slavePorts = new int[] { 69, 69, 69, 69 };
         private int sourcePort = 4001;
 
@@ -253,6 +253,17 @@ namespace sWallActivityManager
             // Edit the selected activity
             else
             {
+                // If no activity is selected, don't do anything
+                if (activitiesListBox.SelectedIndex == -1)
+                {
+                    MessageBox.Show("No activity selected",
+                        "sWall Activity Manager",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                    return;
+
+                }
+
                 // Create a temporary directory with a random filename to store all files
                 string tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
                 Directory.CreateDirectory(tempDirectory);
@@ -298,16 +309,26 @@ namespace sWallActivityManager
                 DeleteActivity();
 
                 // Add the activity
-                // TODO Edit file fields since moved to temp folder
                 AddActivity();
 
                 // Delete the temporary directory along with all the files within it
                 Directory.Delete(tempDirectory, true);
 
+                // Send message for old activity name if name has changed
+                string oldActivityName = activitiesListBox.GetItemText(activitiesListBox.SelectedItem);
+                if (!oldActivityName.Equals(nameTextBox.Text))
+                {
+                    for (int slave = 0; slave < 4; slave++)
+                    {
+                        client.Send(Encoding.ASCII.GetBytes(oldActivityName), Encoding.ASCII.GetBytes(oldActivityName).Length, slaveIPs[slave], slavePorts[slave]);
+                    }
+                }
+
                 // Replace activity name in list box
                 activitiesListBox.Items.Remove(activitiesListBox.SelectedItem);
                 activitiesListBox.Items.Insert(0, nameTextBox.Text);
 
+                // Send message for new activity name
                 for (int slave = 0; slave < 4; slave++)
                 {
                     client.Send(Encoding.ASCII.GetBytes(nameTextBox.Text), Encoding.ASCII.GetBytes(nameTextBox.Text).Length, slaveIPs[slave], slavePorts[slave]);
