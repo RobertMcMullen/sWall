@@ -22,14 +22,32 @@ namespace WindowsFormsApplication2
         
         public void button1_Click(object sender, EventArgs e)
         {
-           
-            fo.setPath(textBox2.Text);
+           if (ls.Checked)
+            {
+                fo.labelset(textBox1.Text);
+                fo.setOpinions("sd d n a sa");
+                fo.insertQuestion(textBox1.Text);
+                this.Hide();
+                fo.Show();
 
+            }
+           else if (tf.Checked) //to do create a new True or false Form
+            {
+
+
+
+            }
+
+
+           
+           /*
             fo.labelset(textBox1.Text);
+            fo.setOpinions("sd d n a sa");
+            fo.insertQuestion(textBox1.Text);
             this.Hide();
              fo.Show();
             
-
+        */
 
         }
 

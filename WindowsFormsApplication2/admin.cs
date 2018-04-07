@@ -29,7 +29,7 @@ namespace WindowsFormsApplication2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (username.Text == "swall" && txtpass.Text=="schramm" && checkBox1.Checked)
+            if (username.Text == "swall" && txtpass.Text=="swall" && checkBox1.Checked)
             {
                 
                 this.Hide();
@@ -39,7 +39,7 @@ namespace WindowsFormsApplication2
             }
             else if(!checkBox1.Checked)
             {
-                MessageBox.Show("You better agree to the terms and conditions");
+                MessageBox.Show("please agree to the terms and conditions");
                
             }else
             {
