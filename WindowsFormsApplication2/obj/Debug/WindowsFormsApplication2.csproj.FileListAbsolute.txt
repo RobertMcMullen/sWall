@@ -25,6 +25,7 @@ C:\Users\Iman\Documents\Visual Studio 2015\Projects\sWall_Survay_v1.0\WindowsFor
 C:\Users\Iman\Documents\Visual Studio 2015\Projects\sWall_Survay_v1.0\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.editor.resources
 C:\Users\Iman\Documents\Visual Studio 2015\Projects\sWall_Survay_v1.0\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.Form1.resources
 C:\Users\Iman\Documents\Visual Studio 2015\Projects\sWall_Survay_v1.0\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.Properties.Resources.resources
+C:\Users\Iman\Documents\Visual Studio 2015\Projects\sWall_Survay_v1.0\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.Theme.resources
 C:\Users\Iman\Documents\Visual Studio 2015\Projects\sWall_Survay_v1.0\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.csproj.GenerateResource.Cache
 C:\Users\Iman\Documents\Visual Studio 2015\Projects\sWall_Survay_v1.0\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.exe
 C:\Users\Iman\Documents\Visual Studio 2015\Projects\sWall_Survay_v1.0\WindowsFormsApplication2\obj\Debug\WindowsFormsApplication2.pdb
