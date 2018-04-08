@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PinchZoom : MonoBehaviour
 {
-	//After viewing the game on the big screen, the pinch zoom should not be used and is not required.
-    public float perspectiveZoomSpeed = 10f;
-    public float orthoZoomSpeed = 10f;
+
+    public float perspectiveZoomSpeed = 0.5f;
+    public float orthoZoomSpeed = 0.5f;
     public Camera cam;
 
     void Update()

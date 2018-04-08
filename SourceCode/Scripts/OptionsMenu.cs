@@ -42,8 +42,13 @@ public class OptionsMenu : MonoBehaviour {
     }
     private void plusRoundsFunc()
     {        
+		if(GamePlay.maxRound <=10){
         GamePlay.maxRound += 1;
         updateRounds(GamePlay.maxRound);
+		}
+		else{
+			//do nothing
+		}
     }
     private void decreaseRoundsFunc()
     {
@@ -56,9 +61,14 @@ public class OptionsMenu : MonoBehaviour {
     }
     private void increaseTimeFunc()
     {        
-        GamePlay.waitTime += 1;
-        changeTime(GamePlay.waitTime);
-    }
+		if(GamePlay.waitTime <=15){
+			GamePlay.waitTime += 1;
+			changeTime(GamePlay.waitTime);
+		}
+		else{
+        //Do nothing
+        }
+	}
     private void decreaseTimeFunc()
     {
         if (GamePlay.waitTime > 1)
